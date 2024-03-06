@@ -14,16 +14,17 @@ services:
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
       MAX_CONNECTIONS: 200
     volumes:
-      - ${PROJECT_NAME}-data:/var/lib/postgresql/data
+      - ${PROJECT_NAME}-postgres-data:/var/lib/postgresql/data
     networks:
-      - default
+      - ${PROJECT_NAME}-postgres-network
     restart: unless-stopped
 
 volumes:
-  ${PROJECT_NAME}-data:
+  ${PROJECT_NAME}-postgres-data:
+    name: ${PROJECT_NAME}-postgres-data
     driver: local
 
 networks:
-  default:
-    name: ${PROJECT_NAME}-network
+  ${PROJECT_NAME}-postgres-network:
+    name: ${PROJECT_NAME}-postgres-network
     driver: bridge
