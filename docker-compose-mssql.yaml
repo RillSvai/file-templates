@@ -3,36 +3,39 @@ version: '3.8'
 services:
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    container_name: ${PROJECT_NAME}-mssql
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "password"
+      SA_PASSWORD: "Password123"
       MSSQL_PID: "Developer" 
       MSSQL_TCP_PORT: 1433
       MSSQL_IP_ADDRESS: "0.0.0.0"  
       MSSQL_BACKUP_DIR: "/var/opt/mssql/backup"
       MSSQL_DATA_DIR: "/var/opt/mssql/data"
       MSSQL_LOG_DIR: "/var/opt/mssql/log"
-      MSSQL_ENABLE_HADR: "1" 
-      MSSQL_AGENT_ENABLED: "True"
     ports:
       - "1433:1433"
     volumes:
-      - ${PROJECT_NAME}-data:/var/opt/mssql/data
-      - ${PROJECT_NAME}-backup:/var/opt/mssql/backup
-      - ${PROJECT_NAME}-log:/var/opt/mssql/log
+      - ${PROJECT_NAME}-mssql-data:/var/opt/mssql/data
+      - ${PROJECT_NAME}-mssql-backup:/var/opt/mssql/backup
+      - ${PROJECT_NAME}-mssql-log:/var/opt/mssql/log
     networks:
-      - ${PROJECT_NAME}-network
+      - ${PROJECT_NAME}-mssql-network
     restart: unless-stopped
 
 volumes:
-  ${PROJECT_NAME}-data:
+  ${PROJECT_NAME}-mssql-data:
     driver: local
-  ${PROJECT_NAME}-backup:
+    name: ${PROJECT_NAME}-mssql-data
+  ${PROJECT_NAME}-mssql-backup:
     driver: local
-  ${PROJECT_NAME}-log:
+    name: ${PROJECT_NAME}-mssql-backup
+  ${PROJECT_NAME}-mssql-log:
     driver: local
+    name:  ${PROJECT_NAME}-mssql-log
 
 networks:
-  ${PROJECT_NAME}:
-    name: ${PROJECT_NAME}-network
+  ${PROJECT_NAME}-mssql-network:
+    name: ${PROJECT_NAME}-mssql-network
     driver: bridge
