@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "password"
+      MSSQL_PID: "Developer" 
+      MSSQL_TCP_PORT: 1433
+      MSSQL_IP_ADDRESS: "0.0.0.0"  
+      MSSQL_BACKUP_DIR: "/var/opt/mssql/backup"
+      MSSQL_DATA_DIR: "/var/opt/mssql/data"
+      MSSQL_LOG_DIR: "/var/opt/mssql/log"
+      MSSQL_ENABLE_HADR: "1" 
+      MSSQL_AGENT_ENABLED: "True"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ${PROJECT_NAME}-data:/var/opt/mssql/data
+      - ${PROJECT_NAME}-backup:/var/opt/mssql/backup
+      - ${PROJECT_NAME}-log:/var/opt/mssql/log
+    networks:
+      - ${PROJECT_NAME}-network
+    restart: unless-stopped
+
+volumes:
+  ${PROJECT_NAME}-data:
+    driver: local
+  ${PROJECT_NAME}-backup:
+    driver: local
+  ${PROJECT_NAME}-log:
+    driver: local
+
+networks:
+  ${PROJECT_NAME}:
+    name: ${PROJECT_NAME}-network
+    driver: bridge

@@ -16,7 +16,7 @@ services:
     volumes:
       - ${PROJECT_NAME}-data:/var/lib/postgresql/data
     networks:
-      - default
+      - ${PROJECT_NAME}-network
     restart: unless-stopped
 
 volumes:
@@ -24,6 +24,6 @@ volumes:
     driver: local
 
 networks:
-  default:
+  ${PROJECT_NAME}:
     name: ${PROJECT_NAME}-network
     driver: bridge
