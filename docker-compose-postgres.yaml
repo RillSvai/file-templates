@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: ${PROJECT_NAME}-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${PROJECT_NAME}
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      MAX_CONNECTIONS: 200
+    volumes:
+      - ${PROJECT_NAME}-data:/var/lib/postgresql/data
+    networks:
+      - default
+    restart: unless-stopped
+
+volumes:
+  ${PROJECT_NAME}-data:
+    driver: local
+
+networks:
+  default:
+    name: ${PROJECT_NAME}-network
+    driver: bridge
