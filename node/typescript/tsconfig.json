@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./.tsbuildinfo",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "useDefineForClassFields": true,
+    "moduleDetection": "auto",
+    "module": "NodeNext",
+    "rootDir": "./src",
+    "moduleResolution": "NodeNext",
+    "baseUrl": "./",
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "newLine": "lf", // crlf for Windows
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
