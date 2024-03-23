@@ -1,8 +1,8 @@
 export enum Stage {
-  Development = "development",
-  Production = "production",
-  Staging = "staging",
-  Qa = "qa",
-  Test = "test",
-  Default = "default",
+  Development = 'development',
+  Production = 'production',
+  Staging = 'staging',
+  Qa = 'qa',
+  Test = 'test',
+  Default = '',
 }

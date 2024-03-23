@@ -1,0 +1,70 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+enum FilterOperator {
+  And
+  Or
+}
+
+input FloatColumnFilterInput {
+  option: NumericFilterOption!
+  value: Float!
+}
+
+input IntColumnFilterInput {
+  option: NumericFilterOption!
+  value: Int!
+}
+
+enum NumericFilterOption {
+  EqualTo
+  GreaterThan
+  LessThan
+  NotEqualTo
+}
+
+type Product {
+  description: String
+  id: Int!
+  name: String!
+  price: Float!
+  stockQuantity: Float!
+  weight: Float!
+}
+
+input ProductFilterInput {
+  filterOperator: FilterOperator!
+  name: [StringColumnFilterInput!]
+  price: [FloatColumnFilterInput!]
+  stockQuantity: [IntColumnFilterInput!]
+  weight: [FloatColumnFilterInput!]
+}
+
+input ProductSortingInput {
+  name: SortOrder
+  price: SortOrder
+  stockQuantity: SortOrder
+  weight: SortOrder
+}
+
+type Query {
+  findAll(filterInput: ProductFilterInput, limit: Int, offset: Int! = 0, sortingInput: ProductSortingInput): [Product!]!
+}
+
+enum SortOrder {
+  Asc
+  Desc
+}
+
+input StringColumnFilterInput {
+  option: StringFilterOption!
+  value: String!
+}
+
+enum StringFilterOption {
+  EqualTo
+  Like
+  NotEqualTo
+  NotLike
+}

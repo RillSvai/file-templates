@@ -1,17 +1,17 @@
-import * as joi from "joi";
-import { join } from "path";
-import { EnvironmentUtil } from "./environment.util";
+import * as joi from 'joi';
+import { join } from 'path';
+import { EnvironmentUtil } from './environment.util';
 
 export abstract class ConfigurationUtil {
   public static getEnvPath() {
     const cwd = process.cwd();
-    const path = join(cwd, "envs", `.env.${EnvironmentUtil.getStage()}`);
+    const path = join(cwd, 'envs', `.env.${EnvironmentUtil.getStage()}`);
 
     return path;
   }
 
   public static getValidationSchema() {
-    const schema = joi.object({
+    const validationSchema = joi.object({
       HTTP_PORT: joi.number().required().min(0).max(65535),
       POSTGRES_USER: joi.string().required(),
       POSTGRES_PASSWORD: joi.string().required(),
@@ -21,6 +21,6 @@ export abstract class ConfigurationUtil {
       POSTGRES_MAX_CLIENT_CONNECTIONS: joi.number().required().min(5),
     });
 
-    return schema;
+    return validationSchema;
   }
 }

@@ -1,8 +1,8 @@
-import { Stage } from "../enums/stage.enum";
+import { Stage } from '../enums/stage.enum';
 
 export abstract class EnvironmentUtil {
   public static getStage() {
-    const stage = process.env.NODE_ENV || "";
+    const stage = process.env.NODE_ENV || '';
     stage.toLowerCase();
 
     switch (stage) {
