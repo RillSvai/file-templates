@@ -1,3 +1,5 @@
 .DS_Store
+
 # For testing 
 docker-compose.yaml
+.prettierrc
