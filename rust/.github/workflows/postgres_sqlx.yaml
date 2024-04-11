@@ -1,0 +1,86 @@
+name: Rust
+
+on: [push, pull_request]
+
+env:
+  CARGO_TERM_COLOR: always
+  SQLX_FEATURES: 'rustls,postgres'
+  SQLX_VERSION: 0.7.4
+
+jobs:
+  fmt:
+    name: Fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Enforce formatting
+        run: cargo fmt --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: sqlx-${{ env.SQLX_VERSION }}
+      - name: Install sqlx-cli
+        run: cargo install sqlx-cli
+          --version=${{ env.SQLX_VERSION }}
+          --features ${{ env.SQLX_FEATURES }}
+          --no-default-features
+          --locked
+
+      - name: Set up PostgreSQL container
+        uses: rillsvai/postgresql-action@main
+        with:
+          version: latest
+          db_name: email_newsletter
+          password: password
+          user: dev
+      - name: Migrate database
+        run: SKIP_DOCKER=true ./scripts/init_db.sh
+
+      - name: Linting
+        run: cargo clippy -- -D warnings
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: sqlx-${{ env.SQLX_VERSION }}
+      - name: Install sqlx-cli
+        run: cargo install sqlx-cli
+          --version=${{ env.SQLX_VERSION }}
+          --features ${{ env.SQLX_FEATURES }}
+          --no-default-features
+          --locked
+
+      - name: Set up PostgreSQL container
+        uses: rillsvai/postgresql-action@main
+        with:
+          version: latest
+          db_name: email_newsletter
+          password: password
+          user: dev
+      - name: Migrate database
+        run: SKIP_DOCKER=true ./scripts/init_db.sh
+
+      - name: Run tests
+        run: cargo test
